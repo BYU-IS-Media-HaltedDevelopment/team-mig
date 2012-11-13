@@ -11,6 +11,9 @@ class TeamworkPortal
      */
     public static function getQuery($query) 
     {
+	//throttler();
+	TeamworkPortal::throttle();
+	
 	global $api_keys,$_SESSION;
 	if(!isset($_SESSION['api_key']) || $_SESSION['api_key'] == "")
 		$credentials = $api_keys["luke's"]["teamwork"].":xxx";
@@ -38,6 +41,23 @@ class TeamworkPortal
 	return $result;
     }
 
+    private static function throttle()
+    {
+	$fp = fopen("rate-limit", "a+");
+	if(flock($fp, LOCK_EX))
+	{
+	    usleep(700);
+	    flock($fp, LOCK_UN);
+	}
+	else 
+	{
+	    echo "Error locking file!";
+	    die();
+	}
+	
+	fclose($fp);
+    }
+    
     public static function getData($query,$formatResult=true)
     {
 	    //echo "Getting data for query: ".$query."\n";

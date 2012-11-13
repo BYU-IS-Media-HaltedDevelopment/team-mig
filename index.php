@@ -38,7 +38,6 @@
 			function(data){
 			   dashTasks[i]
 			});
-		    break;
 		}
 	    }
 	    
