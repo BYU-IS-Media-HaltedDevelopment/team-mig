@@ -68,7 +68,7 @@ class TeamworkProjectManager
 	$teamworkResponse = TeamworkPortal::getData("projects.json");
 	if(!$teamworkResponse)
 	{
-	    echo "Couldn't get the people";
+	    echo "Couldn't get the projects";
 	    die();
 	}
 	

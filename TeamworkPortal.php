@@ -21,7 +21,7 @@ class TeamworkPortal
 					"Accept: application/xml",
 					"Content-Type: text/xml; charset=utf-8"));
 	curl_setopt($ch, CURLOPT_USERPWD, $credentials);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_HEADER, false);
 
 	$result = curl_exec($ch);
