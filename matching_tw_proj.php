@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 require_once 'TeamworkProjectManager.php';
 
@@ -10,6 +11,21 @@ require_once 'TeamworkProjectManager.php';
  * @return The matching teamwork project id is returned and '{}' is 
  * returned if nothing matches
  */
+
+/**
+ * Gets the list of teamwork projects
+ * @return json array of teamwork projects
+ */
+function getTwProjects()
+{
+    $fullProjectJson = TeamworkPortal::getData("projects.json");
+    return $fullProjectJson;
+}
+
+if(!isset($_SESSION["teamwork-porjects"]))
+{
+    $_SESSION["teamwork-porjects"] = getTwProjects();
+}
 
 $matchingTwProj = null;
 if(isset($_GET["externalId"]))
