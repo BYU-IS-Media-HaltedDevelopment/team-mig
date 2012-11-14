@@ -11,19 +11,30 @@ require_once 'TeamworkProjectManager.php';
  * returned if nothing matches
  */
 
+$matchingTwProj = null;
+if(isset($_GET["externalId"]))
+{
+	$_POST["externalId"] = $_GET["externalId"];
+}
 assert(isset($_POST["externalId"]));
-
 
 $teamProjManager = TeamworkProjectManager::getInstance();
 $matchingTwProj = $teamProjManager->getProjectByName($_POST["externalId"]);
 
+$retJSON = "{";
+
+$retJSON .= "'posted-external-id': '".$_POST['externalId']."',";
+
+
 if($matchingTwProj == null)
 {
-    echo "{'matchingTwProjId': 'none'}";
+    $retJSON .= "'matchingTwProjId': 'none'";
 }
 else
 {
-    echo "{'matchingTwProjId':'" + $matchingTwProj->id; + "'}";
+    $retJSON .= "'matchingTwProjId':'" + $matchingTwProj->id; + "'";
 }
-    
+$retJSON .= "}";
+
+echo $retJSON;
 ?>

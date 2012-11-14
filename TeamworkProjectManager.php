@@ -69,6 +69,7 @@ class TeamworkProjectManager
 	if(!$teamworkResponse)
 	{
 	    echo "Couldn't get the projects";
+	    //flush();
 	    die();
 	}
 	

@@ -11,7 +11,8 @@ class TeamworkPortal
      */
     public static function getQuery($query) 
     {
-	//throttler();
+	//$throttleVal = throttler();
+	//print_r($throttleVal);
 	TeamworkPortal::throttle();
 	
 	global $api_keys,$_SESSION;
@@ -32,7 +33,8 @@ class TeamworkPortal
 	if(curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200)
 	{
 		echo "ERROR: Teamwork API Call failed!\n"."HTTP Code: ".
-			curl_getinfo($ch, CURLINFO_HTTP_CODE)."\nResult: ".$result;
+			curl_getinfo($ch, CURLINFO_HTTP_CODE)."\nResult: ".$result 
+			. "\nQuery was: " + $query;
 		exit;
 	}
 	
@@ -46,13 +48,16 @@ class TeamworkPortal
 	$fp = fopen("rate-limit", "a+");
 	if(flock($fp, LOCK_EX))
 	{
-	    usleep(700);
+	    //sleep(1);
+	    time_sleep_until(microtime(true)+0.7);
+	    fwrite($fp, microtime(true));
+	    fwrite($fp, "\n");
 	    flock($fp, LOCK_UN);
 	}
 	else 
 	{
 	    echo "Error locking file!";
-	    die();
+	    exit;
 	}
 	
 	fclose($fp);

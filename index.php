@@ -38,6 +38,9 @@
 			function(data){
 			   dashTasks[i]
 			});
+			
+		  if(i > 5)
+		    break;
 		}
 	    }
 	    
