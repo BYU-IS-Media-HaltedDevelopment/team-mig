@@ -1,19 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/var/www/team-mig/index.php</file>
-        <file>file:/var/www/team-mig/matching_tw_proj.php</file>
-        <file>file:/var/www/team-mig/matching_tw_task_list.php</file>
-        <file>file:/var/www/team-mig/create_tw_task_list.php</file>
-        <file>file:/var/www/team-mig/task_list_has_db_task.php</file>
-        <file>file:/var/www/team-mig/dash_tasks.php</file>
-        <file>file:/var/www/team-mig/DashboardTaskManager.php</file>
-        <file>file:/var/www/team-mig/DashboardPortal.php</file>
-        <file>file:/var/www/team-mig/TeamworkProjectManager.php</file>
-        <file>file:/var/www/team-mig/TeamworkProject.php</file>
-        <file>file:/var/www/team-mig/TeamworkPortal.php</file>
-        <file>file:/var/www/team-mig/throttle.lib.php</file>
-        <file>file:/var/www/team-mig/throttle-counter.txt</file>
-    </open-files>
 </project-private>
