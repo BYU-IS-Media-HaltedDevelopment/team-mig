@@ -47,12 +47,14 @@ $teamProjects = getTwProjectIds();
 // create response
 $retJSON = "{";
 
+$retJSON .= "'\$_SESSION:'" . $_SESSION["teamwork-projects"] . "'";
+
 $retJSON .= "'posted-external-id': '".$_POST['externalId']."',";
 
 $matchingId = "none";
 $dashExternalId = preg_replace("/\s/", "", $_POST["externalId"]);
-if(isset($teamProjects[$dashExternalId]))
-    $matchingId = $teamProjects[$dashExternalId];
+/*if(isset($teamProjects[$dashExternalId]))
+    $matchingId = $teamProjects[$dashExternalId];*/
 
 $retJSON .= "'matchingTwProjId':'" . $matchingId . "'";
 

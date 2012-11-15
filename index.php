@@ -44,6 +44,11 @@
 		}
 	    }
 	    
+	    function destroySession()
+	    {
+		$.post("destroy_session.php", {}, function(data){});
+	    }
+	    
 	</script>
     </head>
     <body>
@@ -58,6 +63,7 @@
 		    <tr><td>Teamwork API Key:</td><td><input id="api-key-input" value="bluff861cod" type="text" /></td></tr>
 		</table>
 		<button onclick="getTasks();" type="button">Get Tasks</button>
+		<button onclick="destroySession();" type="button">Destroy Session</button>
 	    </div>   
     </body>
 </html>
