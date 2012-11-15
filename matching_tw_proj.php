@@ -12,44 +12,50 @@ require_once 'TeamworkProjectManager.php';
  * returned if nothing matches
  */
 
-/**
- * Gets the list of teamwork projects
- * @return json array of teamwork projects
- */
-function getTwProjects()
-{
-    $fullProjectJson = TeamworkPortal::getData("projects.json");
-    return $fullProjectJson;
-}
-
-if(!isset($_SESSION["teamwork-porjects"]))
-{
-    $_SESSION["teamwork-porjects"] = getTwProjects();
-}
-
-$matchingTwProj = null;
-if(isset($_GET["externalId"]))
-{
-	$_POST["externalId"] = $_GET["externalId"];
-}
 assert(isset($_POST["externalId"]));
 
-$teamProjManager = TeamworkProjectManager::getInstance();
-$matchingTwProj = $teamProjManager->getProjectByName($_POST["externalId"]);
+/**
+ * Gets the list of teamwork projects
+ * @return An array of projects ids
+ */
+function getTwProjectIds()
+{
+    // get the teamwork project data if don't have it already
+    if(!isset($_SESSION["teamwork-projects"]))
+    {
+	$allProjects = json_decode(TeamworkPortal::getData("projects.json"));
+	$projNameIdIndex = array();
+	for($i = 0; $i < count($allProjects->projects); $i++)
+	{
+	    preg_match('/.*-...-.../', $allProjects->projects[$i]->name, $matches, 0, 0);
+	    $sanitizedName = $matches[0];
+	    if($sanitizedName === "")
+		continue;
+	    
+	    $projNameIdIndex[$sanitizedName] = $allProjects->projects[$i]->id;
+	}
+	    
+	$_SESSION["teamwork-projects"] = json_encode($projNameIdIndex);
+    }
+  
+    return json_decode($_SESSION["teamwork-projects"]);
+}
 
+$teamProjects = getTwProjectIds();
+
+
+// create response
 $retJSON = "{";
 
 $retJSON .= "'posted-external-id': '".$_POST['externalId']."',";
 
+$matchingId = "none";
+$dashExternalId = preg_replace("/\s/", "", $_POST["externalId"]);
+if(isset($teamProjects[$dashExternalId]))
+    $matchingId = $teamProjects[$dashExternalId];
 
-if($matchingTwProj == null)
-{
-    $retJSON .= "'matchingTwProjId': 'none'";
-}
-else
-{
-    $retJSON .= "'matchingTwProjId':'" + $matchingTwProj->id; + "'";
-}
+$retJSON .= "'matchingTwProjId':'" . $matchingId . "'";
+
 $retJSON .= "}";
 
 echo $retJSON;

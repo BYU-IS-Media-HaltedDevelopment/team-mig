@@ -67,8 +67,9 @@ class TeamworkPortal
     {
 	    //echo "Getting data for query: ".$query."\n";
 	    $result = self::getQuery($query);
+	    return $result;
 	    //echo $result;
-	    return json_decode(($formatResult)?hyphenToUnderscore($result):$result);
+	    //return json_decode(($formatResult)?hyphenToUnderscore($result):$result);
     }
 
     public static function postQuery($query,$verb)
