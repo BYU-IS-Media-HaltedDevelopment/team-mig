@@ -14,6 +14,8 @@ require_once 'TeamworkProjectManager.php';
 
 assert(isset($_POST["externalId"]));
 
+print_r($_POST["externalId"]);
+
 /**
  * Gets the list of teamwork projects
  * @return An array of projects ids
@@ -47,14 +49,14 @@ $teamProjects = getTwProjectIds();
 // create response
 $retJSON = "{";
 
-$retJSON .= "'\$_SESSION:'" . $_SESSION["teamwork-projects"] . "'";
+//$retJSON .= "'\$_SESSION:'" . $_SESSION["teamwork-projects"] . "',";
 
 $retJSON .= "'posted-external-id': '".$_POST['externalId']."',";
 
 $matchingId = "none";
 $dashExternalId = preg_replace("/\s/", "", $_POST["externalId"]);
-/*if(isset($teamProjects[$dashExternalId]))
-    $matchingId = $teamProjects[$dashExternalId];*/
+if(isset($teamProjects->{$dashExternalId}))
+    $matchingId = $teamProjects->{$dashExternalId};
 
 $retJSON .= "'matchingTwProjId':'" . $matchingId . "'";
 

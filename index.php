@@ -30,7 +30,7 @@
 		// migrate each task
 		for(i = 0; i < dashTasks.length; i++)
 		{
-		    //alert(dashTasks[i]["external_id"]);
+		    alert(dashTasks[i]["external_id"]);
 		    
 		    // get the matching teamwork project id
 		    $.post("matching_tw_proj.php", 
@@ -39,7 +39,7 @@
 			   dashTasks[i]
 			});
 			
-		  if(i > 5)
+		  if(i > 35)
 		    break;
 		}
 	    }
