@@ -12,9 +12,18 @@ require_once 'TeamworkProjectManager.php';
  * returned if nothing matches
  */
 
-assert(isset($_POST["externalId"]));
+if(!isset($_POST["externalId"])) {
+    if(!isset($_GET["externalId"])) {
+        echo "{\"error\": \"You must specify an id to match.\"}";
+	exit;
+    } else {
+	$_POST["externalId"] = $_GET["externalId"];
+    }
+}
+print_r($_POST);
+//assert(isset($_POST["externalId"]));
 
-print_r($_POST["externalId"]);
+//print_r($_POST["externalId"]);
 
 /**
  * Gets the list of teamwork projects
@@ -29,7 +38,7 @@ function getTwProjectIds()
 	$projNameIdIndex = array();
 	for($i = 0; $i < count($allProjects->projects); $i++)
 	{
-	    preg_match('/.*-...-.../', $allProjects->projects[$i]->name, $matches, 0, 0);
+	    preg_match('/.*-...R?-.../i', $allProjects->projects[$i]->name, $matches, 0, 0);
 	    $sanitizedName = $matches[0];
 	    if($sanitizedName === "")
 		continue;

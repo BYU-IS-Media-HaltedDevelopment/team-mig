@@ -30,12 +30,13 @@
 		// migrate each task
 		for(i = 0; i < dashTasks.length; i++)
 		{
-		    alert(dashTasks[i]["external_id"]);
+		    console.log(dashTasks[i]["external_id"]);
 		    
 		    // get the matching teamwork project id
-		    $.post("matching_tw_proj.php", 
-			{externalId : dashTasks[i]["external_id"]},
-			function(data){
+		    var dateNow = new Date();
+		    $.post("matching_tw_proj.php?externalId="+dashTasks[i]["external_id"]   //+"&random="+Math.random()+"_"+Date.now()+"."+dateNow.getMilliseconds()
+			//,{externalId : dashTasks[i]["external_id"]}
+			,function(data){
 			   dashTasks[i]
 			});
 			
