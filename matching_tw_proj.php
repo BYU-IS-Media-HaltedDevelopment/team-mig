@@ -2,6 +2,7 @@
 session_start();
 
 require_once 'TeamworkProjectManager.php';
+require_once 'error_utils.php';
 
 /**
  * Get the teamwork project ids of the projects that match the given
@@ -12,6 +13,8 @@ require_once 'TeamworkProjectManager.php';
  * returned if nothing matches
  */
 
+
+// error handling for 
 if(!isset($_POST["externalId"])) {
     if(!isset($_GET["externalId"])) {
         echo "{\"error\": \"You must specify an id to match.\"}";
@@ -20,9 +23,6 @@ if(!isset($_POST["externalId"])) {
 	$_POST["externalId"] = $_GET["externalId"];
     }
 }
-print_r($_POST);
-//assert(isset($_POST["externalId"]));
-
 //print_r($_POST["externalId"]);
 
 /**
@@ -40,6 +40,7 @@ function getTwProjectIds()
 	{
 	    preg_match('/.*-...R?-.../i', $allProjects->projects[$i]->name, $matches, 0, 0);
 	    $sanitizedName = $matches[0];
+	    $sanitizedName = preg_replace("/\s/", "", $sanitizedName);
 	    if($sanitizedName === "")
 		continue;
 	    
@@ -53,7 +54,6 @@ function getTwProjectIds()
 }
 
 $teamProjects = getTwProjectIds();
-
 
 // create response
 $retJSON = "{";

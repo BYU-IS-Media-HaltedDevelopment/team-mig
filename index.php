@@ -33,16 +33,37 @@
 		    console.log(dashTasks[i]["external_id"]);
 		    
 		    // get the matching teamwork project id
-		    var dateNow = new Date();
-		    $.post("matching_tw_proj.php?externalId="+dashTasks[i]["external_id"]   //+"&random="+Math.random()+"_"+Date.now()+"."+dateNow.getMilliseconds()
-			//,{externalId : dashTasks[i]["external_id"]}
-			,function(data){
-			   dashTasks[i]
+		    $.post("matching_tw_proj.php?externalId="+dashTasks[i]["external_id"],   
+			function(data){
+			    matchingTwProj = eval("(" + data + ")");
+			    
+			    if(matchingTwProj.matchingTwProjId == "none")
+			    {
+				// tell user that the task doesn't match anything
+				return;
+			    }
+			
+			    
+			    getMatchingTaskList(matchingTwProj.matchingTwProjId, 
+				dashTasks[i]["description"]);
 			});
 			
 		  if(i > 35)
 		    break;
 		}
+	    }
+	    
+	    /*
+	     * @pre projId != null
+	     */
+	    function getMatchingTaskList(projId, taskDesc)
+	    {
+		$.post("matching_tw_task_list.php", {
+		    taskDescription : taskDesc,
+		    twProjId : projId
+		}, function(data){
+		    
+		});
 	    }
 	    
 	    function destroySession()
