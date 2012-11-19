@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
+	<link rel="stylesheet" type="text/css" href="migration-styles.css" />
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 	<script type="text/javascript">
 	    /*
@@ -11,7 +12,7 @@
 	    var dashTasks = [];
 	    
 	    /**
-	     * Loads the dashboard tasks
+	     * Loads the dashboard tasks into the page
 	     */
 	    function getTasks()
 	    {
@@ -21,8 +22,30 @@
 		    {dash_user: dashUsername}, 
 		    function(data){
 			dashTasks = eval("(" + data + ")");
-			migrateTasks();
+			for(i = 0; i < dashTasks.length; i++)
+			{
+			    newRow = "<tr><td id='descrip" + dashTasks[i]["external_id"] + "'>" + dashTasks[i]["external_id"] +"</td><td>"
+			    if(!dashTasks[i]["description"])
+				newRow += "None";
+			    else
+				newRow += dashTasks[i]["description"];
+			    newRow += "</td>"
+			    newRow += "<td><button onclick='migrateTask(" + 
+				dashTasks[i]["external_id"] + 
+				")' type=button>Migrate</button></td>";
+			    newRow += "</tr>";
+			    $("#task-list").append(newRow);
+			}
+			//migrateTasks();
 		    });
+	    }
+	    
+	    /**
+	    * Migrates the task with the given external id
+	    */
+	    function migrateTask(externalId)
+	    {
+		alert($("#descrip" + externalId).text());
 	    }
 	    
 	    function migrateTasks()
@@ -48,8 +71,8 @@
 				dashTasks[i]["description"]);
 			});
 			
-		  if(i > 35)
-		    break;
+		  //if(i > 35)
+		   // break;
 		}
 	    }
 	    
@@ -84,8 +107,14 @@
 		    --->
 		    <tr><td>Teamwork API Key:</td><td><input id="api-key-input" value="bluff861cod" type="text" /></td></tr>
 		</table>
-		<button onclick="getTasks();" type="button">Get Tasks</button>
+		<button onclick="getTasks();" type="button">Get My Tasks</button>
 		<button onclick="destroySession();" type="button">Destroy Session</button>
 	    </div>   
+	
+	<div>
+	    <table id="task-list">
+		<tr><th>External Id</th><th>Description</th></tr>
+	    </table>
+	</div>
     </body>
 </html>

@@ -30,6 +30,13 @@ else if(!isset($_POST["twProjId"])) {
 $query = "projects/" . $_POST["twProjId"] . "/todo_lists.json";
 $todoLists = TeamworkPortal::getData($query);
 
-print_r($todoLists);
+$response = new stdClass();
+$response->query = $query;
+$response->todoLists = $todoLists;
+echo json_encode($response);
+
+//print_r($query);
+
+//print_r($todoLists);
 
 ?>
