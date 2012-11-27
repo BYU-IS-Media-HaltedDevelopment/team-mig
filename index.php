@@ -24,19 +24,19 @@
 			dashTasks = eval("(" + data + ")");
 			for(i = 0; i < dashTasks.length; i++)
 			{
-			    newRow = "<tr><td id='descrip" + dashTasks[i]["external_id"] + "'>" + dashTasks[i]["external_id"] +"</td><td>"
+			    // build the row with the task inside
+			    newRow = "<tr id='" + dashTasks[i]["my_task_id"] + "'>";
+			    newRow += "<td class='descrip'>" + dashTasks[i]["external_id"] + "</td>";
 			    if(!dashTasks[i]["description"])
-				newRow += "None";
+				newRow += "<td>None</td>";
 			    else
-				newRow += dashTasks[i]["description"];
-			    newRow += "</td>"
-			    newRow += "<td><button onclick='migrateTask(\"" + 
-				dashTasks[i]["external_id"] + 
-				"\")' type=button>Migrate</button></td>";
+				newRow += "<td>" + dashTasks[i]["description"] + "</td>";
+			    newRow += "<td><button type=button onclick='migrate(\"" +
+				dashTasks[i]["external_id"] + "\")' type=button>Migrate</button></td>";
 			    newRow += "</tr>";
+			    
 			    $("#task-list").append(newRow);
 			}
-			//migrateTasks();
 		    });
 	    }
 	    
@@ -45,8 +45,26 @@
 	    */
 	    function migrateTask(externalId)
 	    {
-		alert(externalId);
-		alert($("#descrip" + externalId).text());
+		// get the matching teamwork project id
+		$.post("matching_tw_proj.php?externalId=" + externalId,   
+		    function(data){
+			matchingTwProj = eval("(" + data + ")");
+
+			if(matchingTwProj.matchingTwProjId == "none")
+			{
+			    alert("Task does not have matching project in Team Work");
+			    return;
+			}
+			else
+			{
+			    alert("Has matching Team Work project");
+			}
+
+			alert($("#descrip" + externalId).next().css("background", "yellow"));
+			
+			getMatchingTaskList(matchingTwProj.matchingTwProjId, 
+			    dashTasks[i]["description"]);
+		    });
 	    }
 	    
 	    function migrateTasks()
@@ -63,8 +81,12 @@
 			    
 			    if(matchingTwProj.matchingTwProjId == "none")
 			    {
-				// tell user that the task doesn't match anything
+				alert("Task does not have matching project in Team Work");
 				return;
+			    }
+			    else
+			    {
+				alert("Has id!");
 			    }
 			
 			    
