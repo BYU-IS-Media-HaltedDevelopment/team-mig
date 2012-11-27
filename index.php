@@ -26,13 +26,17 @@
 			{
 			    // build the row with the task inside
 			    newRow = "<tr id='" + dashTasks[i]["my_task_id"] + "'>";
-			    newRow += "<td class='descrip'>" + dashTasks[i]["external_id"] + "</td>";
+			    newRow += "<td class='externalId'>" + dashTasks[i]["external_id"] + "</td>";
+			    
+			    newRow += "<td class=descrip>";
 			    if(!dashTasks[i]["description"])
-				newRow += "<td>None</td>";
+				newRow += "None";
 			    else
-				newRow += "<td>" + dashTasks[i]["description"] + "</td>";
-			    newRow += "<td><button type=button onclick='migrate(\"" +
-				dashTasks[i]["external_id"] + "\")' type=button>Migrate</button></td>";
+				newRow += dashTasks[i]["description"];
+			    newRow += "</td>";
+			    
+			    newRow += "<td><button type=button onclick='migrateTask(\"" +
+				dashTasks[i]["my_task_id"] + "\")' type=button>Migrate</button></td>";
 			    newRow += "</tr>";
 			    
 			    $("#task-list").append(newRow);
@@ -43,8 +47,11 @@
 	    /**
 	    * Migrates the task with the given external id
 	    */
-	    function migrateTask(externalId)
+	    function migrateTask(dashTaskId)
 	    {
+		// get the external id of the task
+		externalId = $("#" + dashTaskId + " .externalId").text();
+		
 		// get the matching teamwork project id
 		$.post("matching_tw_proj.php?externalId=" + externalId,   
 		    function(data){
@@ -57,13 +64,15 @@
 			}
 			else
 			{
-			    alert("Has matching Team Work project");
-			}
-
-			alert($("#descrip" + externalId).next().css("background", "yellow"));
+			    getMatchingTaskList(matchingTwProj.matchingTwProjId, 
+				$("#" + dashTaskId + " .descrip").text());
+			    
+			    //alert($("#" + dashTaskId + " .descrip").text());
+			    //alert($("#descrip" + dashTaskId).next().css("background", "yellow"));
+			}			
 			
-			getMatchingTaskList(matchingTwProj.matchingTwProjId, 
-			    dashTasks[i]["description"]);
+			/*getMatchingTaskList(matchingTwProj.matchingTwProjId, 
+			    dashTasks[i]["description"]);*/
 		    });
 	    }
 	    
@@ -75,7 +84,7 @@
 		    console.log(dashTasks[i]["external_id"]);
 		    
 		    // get the matching teamwork project id
-		    $.post("matching_tw_proj.php?externalId="+dashTasks[i]["external_id"],   
+		    $.post("matching_tw_proj.php?externalId=" + dashTasks[i]["external_id"],   
 			function(data){
 			    matchingTwProj = eval("(" + data + ")");
 			    
@@ -104,10 +113,12 @@
 	     */
 	    function getMatchingTaskList(projId, taskDesc)
 	    {
+		alert("Getting task list for: " + taskDesc);
 		$.post("matching_tw_task_list.php", {
 		    taskDescription : taskDesc,
 		    twProjId : projId
 		}, function(data){
+		    alert("Data");
 		    
 		});
 	    }
