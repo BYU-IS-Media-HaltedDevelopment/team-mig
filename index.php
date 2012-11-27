@@ -30,9 +30,9 @@
 			    else
 				newRow += dashTasks[i]["description"];
 			    newRow += "</td>"
-			    newRow += "<td><button onclick='migrateTask(" + 
+			    newRow += "<td><button onclick='migrateTask(\"" + 
 				dashTasks[i]["external_id"] + 
-				")' type=button>Migrate</button></td>";
+				"\")' type=button>Migrate</button></td>";
 			    newRow += "</tr>";
 			    $("#task-list").append(newRow);
 			}
@@ -45,6 +45,7 @@
 	    */
 	    function migrateTask(externalId)
 	    {
+		alert(externalId);
 		alert($("#descrip" + externalId).text());
 	    }
 	    
